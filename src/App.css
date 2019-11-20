@@ -1,24 +1,33 @@
 .todoList {
-  width: 500px;
-  margin: 0 auto;
+    width: 500px;
+    margin: 0 auto;
 }
 
 .todoList > div {
-  padding: 10px;
+    padding: 10px;
 }
 
 .active {
-  background: lightblue;
+    background: lightblue;
 }
 
 .highPriority {
-  color: red;
+    color: red;
 }
 
 .mediumPriority {
-  color: cornflowerblue;
+    color: cornflowerblue;
 }
 
 .lowPriority {
-  color: mediumseagreen;
+    color: mediumseagreen;
+}
+
+.noPriority {
+    color: black;
+}
+
+.todoList-footer button {
+  outline: none;
+  margin: 0 2px;
 }
