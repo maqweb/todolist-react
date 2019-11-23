@@ -7,12 +7,12 @@ class Task extends React.Component {
         this.props.changeStatus(this.props.task, e.currentTarget.checked)
     };
 
-    render = (props) => {
+    render = () => {
 
-        let priorityClass = this.props.priority;
-        this.props.priority === 'high' ? priorityClass = "highPriority" :
-            this.props.priority === 'medium' ? priorityClass = "mediumPriority" :
-                this.props.priority === 'low' ?  priorityClass = "lowPriority" : priorityClass = "noPriority";
+        let priorityClass = this.props.task.priority;
+        this.props.task.priority === 'high' ? priorityClass = "highPriority" :
+            this.props.task.priority === 'medium' ? priorityClass = "mediumPriority" :
+                this.props.task.priority === 'low' ?  priorityClass = "lowPriority" : priorityClass = "noPriority";
 
         return (
             <div className="todoList-task">
@@ -21,7 +21,7 @@ class Task extends React.Component {
                        checked={this.props.task.isDone}
                        onChange={this.onIsDoneChanged}/>
 
-                <span className={priorityClass}> {this.props.title} / priority - {this.props.priority} </span>
+                <span className={priorityClass}> {this.props.task.title} / priority - {this.props.task.priority} </span>
             </div>
         )
     }
