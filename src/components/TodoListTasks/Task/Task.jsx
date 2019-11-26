@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 
 class Task extends React.Component {
@@ -9,19 +9,20 @@ class Task extends React.Component {
 
     render = () => {
 
-        let priorityClass = this.props.task.priority;
-        this.props.task.priority === 'high' ? priorityClass = "highPriority" :
-            this.props.task.priority === 'medium' ? priorityClass = "mediumPriority" :
-                this.props.task.priority === 'low' ?  priorityClass = "lowPriority" : priorityClass = "noPriority";
+        let priorityClass = this.props.task.priority === 'high' ? 'highPriority' :
+            this.props.task.priority === 'medium' ? 'mediumPriority' :
+                this.props.task.priority === 'low' ? 'lowPriority' : 'noPriority';
+
+        let isDoneClass = this.props.task.isDone === true ? 'done' : '';
 
         return (
-            <div className="todoList-task">
+            <div className='todoList-task'>
 
-                <input type="checkbox"
+                <input type='checkbox'
                        checked={this.props.task.isDone}
                        onChange={this.onIsDoneChanged}/>
 
-                <span className={priorityClass}> {this.props.task.title} / priority - {this.props.task.priority} </span>
+                <span className={`${priorityClass} ${isDoneClass}`}> {this.props.task.title} / priority - {this.props.task.priority}</span>
             </div>
         )
     }
@@ -31,5 +32,4 @@ export default Task;
 
 Task.propTypes = {
     title: PropTypes.string
-
 };

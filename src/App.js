@@ -8,11 +8,11 @@ class App extends React.Component {
 
     state = {
         tasks: [
-            {title: 'HTML', isDone: true, priority: 'low'},
-            {title: 'CSS', isDone: true, priority: 'low'},
-            {title: 'JS', isDone: true, priority: 'medium'},
-            {title: 'React', isDone: false, priority: 'high'},
-            {title: 'Redux', isDone: false, priority: 'high'}
+            {title: 'HTML', isDone: true, priority: 'low', id: 1},
+            {title: 'CSS', isDone: true, priority: 'low', id: 2},
+            {title: 'JS', isDone: true, priority: 'medium', id: 3},
+            {title: 'React', isDone: false, priority: 'high', id: 4},
+            {title: 'Redux', isDone: false, priority: 'high', id: 5}
         ],
         filterValue: "All"
     };
@@ -21,7 +21,8 @@ class App extends React.Component {
         let newTask = {
             title: newText,
             isDone: false,
-            priority: 'no'
+            priority: 'no',
+            id: this.state.tasks.length + 1
         };
         let newTasks = [...this.state.tasks, newTask];
         this.setState({tasks: newTasks});
@@ -49,15 +50,17 @@ class App extends React.Component {
     render = () => {
 
         const getFilterTasks = (tasks) => {
-            return tasks.filter(t => {
-                if (this.state.filterValue === 'All'){
-                    return true;
-                } else if (this.state.filterValue === 'Active'){
-                    return t.isDone === false;
-                } else if (this.state.filterValue === 'Completed'){
-                    return t.isDone === true;
-                }
-            })
+            return (
+                tasks.filter(t => {
+                    if (this.state.filterValue === 'All') {
+                        return true;
+                    } else if (this.state.filterValue === 'Active') {
+                        return t.isDone === false;
+                    } else if (this.state.filterValue === 'Completed') {
+                        return t.isDone === true;
+                    }
+                })
+            )
         };
 
         return (
@@ -65,8 +68,8 @@ class App extends React.Component {
                 <div className="todoList">
                     <TodoListHeader addTask={this.addTask}/>
 
-                    <TodoListTasks  tasks={getFilterTasks(this.state.tasks)}
-                                    changeStatus={this.changeStatus}/>
+                    <TodoListTasks tasks={getFilterTasks(this.state.tasks)}
+                                   changeStatus={this.changeStatus}/>
 
                     <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
                 </div>

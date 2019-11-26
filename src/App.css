@@ -1,5 +1,5 @@
 .todoList {
-    width: 500px;
+    width: 270px;
     margin: 0 auto;
 }
 
@@ -30,4 +30,12 @@
 .todoList-footer button {
   outline: none;
   margin: 0 2px;
+}
+
+.error {
+  border-color: tomato;
+}
+
+.done {
+  opacity: 0.5;
 }
