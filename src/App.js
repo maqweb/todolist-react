@@ -8,21 +8,22 @@ class App extends React.Component {
 
     state = {
         tasks: [
-            {title: 'HTML', isDone: true, priority: 'low', id: 1},
-            {title: 'CSS', isDone: true, priority: 'low', id: 2},
-            {title: 'JS', isDone: true, priority: 'medium', id: 3},
-            {title: 'React', isDone: false, priority: 'high', id: 4},
-            {title: 'Redux', isDone: false, priority: 'high', id: 5}
+            {id: 1, title: 'HTML', isDone: true, priority: 'low'},
+            {id: 2, title: 'CSS', isDone: true, priority: 'low'},
+            {id: 3, title: 'JS', isDone: true, priority: 'medium'},
+            {id: 4, title: 'React', isDone: false, priority: 'high'},
+            {id: 5, title: 'Redux', isDone: false, priority: 'high'}
         ],
         filterValue: "All"
     };
 
     addTask = (newText) => {
         let newTask = {
+            id: this.state.tasks.length + 1,
             title: newText,
             isDone: false,
-            priority: 'no',
-            id: this.state.tasks.length + 1
+            priority: 'no'
+
         };
         let newTasks = [...this.state.tasks, newTask];
         this.setState({tasks: newTasks});
@@ -34,12 +35,20 @@ class App extends React.Component {
         })
     };
 
-    changeStatus = (task, isDone) => {
+    changeStatus = (taskId, isDone) => {
+        this.changeTask(taskId, {isDone: isDone})
+    };
+
+    changeTitle = (taskId, newTitle) => {
+        this.changeTask(taskId, {title: newTitle})
+    };
+
+    changeTask = (taskId, obj) => {
         let newTasks = this.state.tasks.map(t => {
-            if (t !== task) {
-                return t;
+            if (t.id === taskId) {
+                return {...t, ...obj}
             } else {
-                return {...t, isDone: isDone}
+                return t
             }
         });
         this.setState({
@@ -69,7 +78,8 @@ class App extends React.Component {
                     <TodoListHeader addTask={this.addTask}/>
 
                     <TodoListTasks tasks={getFilterTasks(this.state.tasks)}
-                                   changeStatus={this.changeStatus}/>
+                                   changeStatus={this.changeStatus}
+                                   changeTitle={this.changeTitle}/>
 
                     <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
                 </div>

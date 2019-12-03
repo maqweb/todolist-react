@@ -1,5 +1,5 @@
 .todoList {
-    width: 270px;
+    width: 370px;
     margin: 0 auto;
 }
 
@@ -9,6 +9,7 @@
 
 .active {
     background: lightblue;
+    border-radius: 4px;
 }
 
 .highPriority {

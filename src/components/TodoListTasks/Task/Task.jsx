@@ -3,9 +3,31 @@ import PropTypes from 'prop-types';
 
 class Task extends React.Component {
 
-    onIsDoneChanged = (e) => {
-        this.props.changeStatus(this.props.task, e.currentTarget.checked)
+    state = {
+        editMode: false
     };
+
+    onIsDoneChanged = (e) => {
+        this.props.changeStatus(this.props.task.id, e.currentTarget.checked)
+    };
+
+    onTitleChanged = (e) => {
+        this.props.changeTitle(this.props.task.id, e.currentTarget.value);
+    };
+
+    activateEditMode = () => {
+        this.setState({
+            editMode: true
+        })
+    };
+
+    deactivateEditMode = () => {
+        this.setState({
+            editMode: false
+        })
+    };
+
+
 
     render = () => {
 
@@ -22,7 +44,15 @@ class Task extends React.Component {
                        checked={this.props.task.isDone}
                        onChange={this.onIsDoneChanged}/>
 
-                <span className={`${priorityClass} ${isDoneClass}`}> {this.props.task.title} / priority - {this.props.task.priority}</span>
+                {this.state.editMode ?
+                    <input onBlur={this.deactivateEditMode}
+                           autoFocus={true}
+                           onChange={this.onTitleChanged}
+                           value={this.props.task.title} type="text"/>
+
+                    : <span onClick={this.activateEditMode}
+                            className={`${priorityClass} ${isDoneClass}`}>{this.props.task.id} - {this.props.task.title}</span> } <span> - priority: {this.props.task.priority}</span>
+
             </div>
         )
     }
