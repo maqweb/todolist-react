@@ -6,15 +6,38 @@ import TodoListFooter from './components/TodoListFooter/TodoListFooter';
 
 class App extends React.Component {
 
+    componentDidMount() {
+        this.restoreState()
+    }
+
     state = {
         tasks: [
-            {id: 1, title: 'HTML', isDone: true, priority: 'low'},
-            {id: 2, title: 'CSS', isDone: true, priority: 'low'},
-            {id: 3, title: 'JS', isDone: true, priority: 'medium'},
-            {id: 4, title: 'React', isDone: false, priority: 'high'},
-            {id: 5, title: 'Redux', isDone: false, priority: 'high'}
+            // {id: 1, title: 'HTML', isDone: true, priority: 'low'},
+            // {id: 2, title: 'CSS', isDone: true, priority: 'low'},
+            // {id: 3, title: 'JS', isDone: true, priority: 'medium'},
+            // {id: 4, title: 'React', isDone: false, priority: 'high'},
+            // {id: 5, title: 'Redux', isDone: false, priority: 'high'}
         ],
         filterValue: "All"
+    };
+
+    saveState = () => {
+        //переводим объект в строку
+        let stateAsString = JSON.stringify(this.state);
+        // сохраняем стэйт в localStorage под ключом 'our-state'
+        localStorage.setItem('our-state', stateAsString)
+    };
+
+    restoreState = () => {
+        let state = {
+            tasks: [],
+            filterValue: 'All'
+        };
+        let stateAsString = localStorage.getItem('our-state');
+        if (stateAsString != null) {
+            state = JSON.parse(stateAsString);
+        }
+        this.setState(state);
     };
 
     addTask = (newText) => {
@@ -26,13 +49,13 @@ class App extends React.Component {
 
         };
         let newTasks = [...this.state.tasks, newTask];
-        this.setState({tasks: newTasks});
+        this.setState({tasks: newTasks}, () => {this.saveState()});
     };
 
     changeFilter = (newFilterValue) => {
         this.setState({
             filterValue: newFilterValue
-        })
+        }, () => {this.saveState()})
     };
 
     changeStatus = (taskId, isDone) => {
@@ -53,7 +76,7 @@ class App extends React.Component {
         });
         this.setState({
             tasks: newTasks
-        })
+        }, () => {this.saveState()})
     };
 
     render = () => {
