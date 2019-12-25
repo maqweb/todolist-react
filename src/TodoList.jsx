@@ -4,6 +4,7 @@ import TodoListTasks from './components/TodoListTasks/TodoListTasks';
 import TodoListFooter from './components/TodoListFooter/TodoListFooter';
 import TodoListTitle from "./components/TodoListHeader/TodoListTitle";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
+import {connect} from "react-redux";
 
 class TodoList extends React.Component {
 
@@ -43,16 +44,16 @@ class TodoList extends React.Component {
 
     addItem = (newTitle) => {
         let newTask = {
-            id: this.state.tasks.length + 1,
+            id: this.props.tasks.length + 1,
             title: newTitle,
             isDone: false,
             priority: 'no'
 
         };
-        let newTasks = [...this.state.tasks, newTask];
-        this.setState({tasks: newTasks}, () => {
-            this.saveState()
-        });
+        // let newTasks = [...this.state.tasks, newTask];
+        // this.setState({tasks: newTasks}, () => {this.saveState()});
+
+        this.props.addTask(newTask, this.props.id);
     };
 
     changeFilter = (newFilterValue) => {
@@ -90,37 +91,46 @@ class TodoList extends React.Component {
 
         const getFilterTasks = (tasks) => {
             return tasks.filter(t => {
-                    if (this.state.filterValue === 'Active') {
-                        return t.isDone === false;
-                    } else if (this.state.filterValue === 'Completed') {
-                        return t.isDone === true;
-                    } else {
-                        return true;
+                        if (this.state.filterValue === 'Active') {
+                            return t.isDone === false;
+                        } else if (this.state.filterValue === 'Completed') {
+                            return t.isDone === true;
+                        } else {
+                            return true;
+                        }
                     }
-                }
             )
         };
 
         return (
-            <div className="App">
-                <div className="todoList">
+                <div className="App">
+                    <div className="todoList">
 
-                    <div className="todoList-header">
-                        <TodoListTitle title={this.props.title}/>
-                        <AddNewItemForm addItem={this.addItem}/>
+                        <div className="todoList-header">
+                            <TodoListTitle title={this.props.title}/>
+                            <AddNewItemForm addItem={this.addItem}/>
+                        </div>
+
+                        <TodoListTasks tasks={getFilterTasks(this.props.tasks)}
+                                       changeStatus={this.changeStatus}
+                                       changeTitle={this.changeTitle}/>
+
+                        <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
+
                     </div>
-
-                    <TodoListTasks tasks={getFilterTasks(this.state.tasks)}
-                                   changeStatus={this.changeStatus}
-                                   changeTitle={this.changeTitle}/>
-
-                    <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
-
                 </div>
-            </div>
         );
     }
 }
 
-export default TodoList;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTask: (newTask, todolistId) => {
+            const action = {type: 'ADD-TASK', newTask, todolistId};
+            dispatch(action)
+        }
+    }
+};
 
+const ConnectedTodolist = connect(null, mapDispatchToProps)(TodoList);
+export default ConnectedTodolist;
