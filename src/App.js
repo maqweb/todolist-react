@@ -25,16 +25,18 @@ class App extends React.Component {
     };
 
     addTodoList = (newTitle) => {
+
         let newTodoList = {
-            id: this.state.todolists.length + 1,
-            title: newTitle
+            id: this.props.todolists.length + 1,
+            title: newTitle,
+            tasks: []
         };
+
         // this.setState({todolists: [...this.state.todolists, newTodoList]}, this.saveState)
         this.props.addTodolist(newTodoList);
     };
 
     render = () => {
-
         const todoLists = this.props.todolists.map(tl => <TodoList id={tl.id}
                                                                    key={tl.id}
                                                                    title={tl.title}

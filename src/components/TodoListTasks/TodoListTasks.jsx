@@ -1,10 +1,8 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import Task from "./Task/Task";
 
 class TodoListTasks extends React.Component {
     render = () => {
-
         const tasksElement = this.props.tasks.map(task => {
             return <Task key={task.id}
                          task={task}
@@ -21,7 +19,3 @@ class TodoListTasks extends React.Component {
 }
 
 export default TodoListTasks;
-
-TodoListTasks.propTypes = {
-    tasks: PropTypes.array
-};

@@ -90,10 +90,12 @@ class TodoList extends React.Component {
     render = () => {
 
         const getFilterTasks = (tasks) => {
+            // console.log(tasks);
+
             return tasks.filter(t => {
-                        if (this.state.filterValue === 'Active') {
+                        if (this.props.filterValue === 'Active') {
                             return t.isDone === false;
-                        } else if (this.state.filterValue === 'Completed') {
+                        } else if (this.props.filterValue === 'Completed') {
                             return t.isDone === true;
                         } else {
                             return true;
