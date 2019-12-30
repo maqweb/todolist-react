@@ -52,3 +52,8 @@
 .done {
   opacity: 0.5;
 }
+
+.todoList-header__title {
+  display: inline-block;
+  margin-right: 15px;
+}

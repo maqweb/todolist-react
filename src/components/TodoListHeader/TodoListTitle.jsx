@@ -3,9 +3,12 @@ import '../../App.css'
 
 class TodoListTitle extends React.Component {
 
-    render = (props) => {
+    render = () => {
         return (
-            <h3 className="todoList-header__title">{this.props.title}</h3>
+                <div>
+                    <h3 className="todoList-header__title">{this.props.title}</h3>
+                    <button onClick={this.props.removeTodolist} className="btn">X</button>
+                </div>
         );
     }
 }

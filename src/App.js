@@ -31,16 +31,19 @@ class App extends React.Component {
             title: newTitle,
             tasks: []
         };
-
-        // this.setState({todolists: [...this.state.todolists, newTodoList]}, this.saveState)
         this.props.addTodolist(newTodoList);
+    };
+
+    removeTodolist = () => {
+      alert('Remove!')
     };
 
     render = () => {
         const todoLists = this.props.todolists.map(tl => <TodoList id={tl.id}
                                                                    key={tl.id}
                                                                    title={tl.title}
-                                                                   tasks={tl.tasks}/>);
+                                                                   tasks={tl.tasks}
+                                                                   removeTodolist={this.removeTodolist}/>);
 
         return (
                 <>
@@ -66,6 +69,10 @@ const mapDispatchToProps = (dispatch) => {
         addTodolist: (newTodolist) => {
             const action = {type: "ADD-TODOLIST", newTodolist: newTodolist};
             dispatch(action)
+        },
+        removeTodolist: (todolistId) => {
+            const action = {type: "REMOVE-TODOLIST", todolistId: todolistId};
+            dispatch(action);
         }
     }
 };

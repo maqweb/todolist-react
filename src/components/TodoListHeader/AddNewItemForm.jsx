@@ -39,7 +39,7 @@ class AddNewItemForm extends React.Component {
         }
     };
 
-    render = (props) => {
+    render = () => {
 
         let errorClass = this.state.error === true ? 'error' : '';
 
