@@ -3,26 +3,9 @@ import './App.css';
 import TodoList from "./TodoList.jsx";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
+import {ADD_TODOLIST} from "./store/reducer";
 
 class App extends React.Component {
-
-    componentDidMount() {
-        this.restoreState();
-    }
-
-    saveState = () => {
-        let stateAsString = JSON.stringify(this.state);
-        localStorage.setItem('our-todo-list', stateAsString)
-    };
-
-    restoreState = () => {
-        let state = this.state;
-        let stateAsString = localStorage.getItem('our-todo-list');
-        if (stateAsString != null) {
-            state = JSON.parse(stateAsString);
-        }
-        this.setState(state)
-    };
 
     addTodoList = (newTitle) => {
 
@@ -34,16 +17,13 @@ class App extends React.Component {
         this.props.addTodolist(newTodoList);
     };
 
-    removeTodolist = () => {
-      alert('Remove!')
-    };
+
 
     render = () => {
         const todoLists = this.props.todolists.map(tl => <TodoList id={tl.id}
                                                                    key={tl.id}
                                                                    title={tl.title}
-                                                                   tasks={tl.tasks}
-                                                                   removeTodolist={this.removeTodolist}/>);
+                                                                   tasks={tl.tasks}/>);
 
         return (
                 <>
@@ -67,12 +47,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addTodolist: (newTodolist) => {
-            const action = {type: "ADD-TODOLIST", newTodolist: newTodolist};
+            const action = {type: ADD_TODOLIST, newTodolist: newTodolist};
             dispatch(action)
-        },
-        removeTodolist: (todolistId) => {
-            const action = {type: "REMOVE-TODOLIST", todolistId: todolistId};
-            dispatch(action);
         }
     }
 };

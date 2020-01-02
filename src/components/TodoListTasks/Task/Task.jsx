@@ -27,33 +27,37 @@ class Task extends React.Component {
         })
     };
 
-
+    onDeleteTask = () => {
+        this.props.removeTask(this.props.task.id);
+    };
 
     render = () => {
 
         let priorityClass = this.props.task.priority === 'high' ? 'highPriority' :
-            this.props.task.priority === 'medium' ? 'mediumPriority' :
-                this.props.task.priority === 'low' ? 'lowPriority' : 'noPriority';
+                this.props.task.priority === 'medium' ? 'mediumPriority' :
+                        this.props.task.priority === 'low' ? 'lowPriority' : 'noPriority';
 
         let isDoneClass = this.props.task.isDone === true ? 'done' : '';
 
         return (
-            <div className='todoList-task'>
+                <div className='todoList-task'>
 
-                <input type='checkbox'
-                       checked={this.props.task.isDone}
-                       onChange={this.onIsDoneChanged}/>
+                    <input type='checkbox'
+                           checked={this.props.task.isDone}
+                           onChange={this.onIsDoneChanged}/>
 
-                {this.state.editMode ?
-                    <input onBlur={this.deactivateEditMode}
-                           autoFocus={true}
-                           onChange={this.onTitleChanged}
-                           value={this.props.task.title} type="text"/>
+                    {this.state.editMode ?
+                            <input onBlur={this.deactivateEditMode}
+                                   autoFocus={true}
+                                   onChange={this.onTitleChanged}
+                                   value={this.props.task.title} type="text"/>
 
-                    : <span onClick={this.activateEditMode}
-                            className={`${priorityClass} ${isDoneClass}`}>{this.props.task.id} - {this.props.task.title}</span> } <span> - priority: {this.props.task.priority}</span>
+                            : <span onClick={this.activateEditMode}
+                                    className={`${priorityClass} ${isDoneClass}`}>{this.props.task.id} - {this.props.task.title}</span>}
+                    <span> - priority: {this.props.task.priority}</span>
 
-            </div>
+                    <button className="btn-tasks" onClick={this.onDeleteTask}>X</button>
+                </div>
         )
     }
 }

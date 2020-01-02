@@ -40,6 +40,15 @@
   color: black;
 }
 
+.todoList-tasks {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn-tasks {
+  margin-left: 5px;
+}
+
 .todoList-footer button {
   outline: none;
   margin: 0 2px;

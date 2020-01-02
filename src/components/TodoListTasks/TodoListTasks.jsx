@@ -7,7 +7,8 @@ class TodoListTasks extends React.Component {
             return <Task key={task.id}
                          task={task}
                          changeStatus={this.props.changeStatus}
-                         changeTitle={this.props.changeTitle}/>
+                         changeTitle={this.props.changeTitle}
+                         removeTask={this.props.removeTask}/>
         });
 
         return (
