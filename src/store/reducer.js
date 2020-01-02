@@ -1,17 +1,18 @@
-export const ADD_TODOLIST =  'Todolist/Reducer/ADD-TODOLIST';
-export const REMOVE_TODOLIST =  'Todolist/Reducer/REMOVE-TODOLIST';
-export const ADD_TASK =  'Todolist/Reducer/ADD-TASK';
-export const REMOVE_TASK =  'Todolist/Reducer/REMOVE-TASK';
-export const CHANGE_TASK =  'Todolist/Reducer/CHANGE-TASK';
+export const ADD_TODOLIST = 'ADD-TODOLIST';
+export const REMOVE_TODOLIST = 'REMOVE-TODOLIST';
+export const ADD_TASK = 'ADD-TASK';
+export const REMOVE_TASK = 'REMOVE-TASK';
+export const CHANGE_TASK = 'CHANGE-TASK';
 
 
 const initialState = {
     todolists: [
-        {id: 1, title: "first", tasks: [
+        {
+            id: 1, title: "first", tasks: [
                 {title: "html/css", isDone: false, id: 1, priority: "low"},
                 {title: "javascript", isDone: false, id: 2, priority: "high"},
                 {title: "react", isDone: false, id: 3, priority: "high"},
-                ]
+            ]
         },
         {id: 2, title: "second", tasks: []},
         {id: 3, title: "third", tasks: []},
@@ -50,7 +51,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 todolists: state.todolists.map(tl => {
-                    if (tl.id === action.todolistId){
+                    if (tl.id === action.todolistId) {
                         return {...tl, tasks: tl.tasks.filter(tl => tl.id !== action.taskId)}
                     } else {
                         return tl
@@ -84,10 +85,24 @@ const reducer = (state = initialState, action) => {
     }
 };
 
+export const addTolistAC = (newTodolist) => {
+    return {type: ADD_TODOLIST, newTodolist}
+};
 
+export const removeTodolistAC = (todolistId) => {
+    return {type: REMOVE_TODOLIST, todolistId}
+};
+
+export const addTaskAC = (newTask, todolistId) => {
+    return {type: ADD_TASK, newTask, todolistId}
+};
 
 export const updateTaskAC = (taskId, obj, todolistId) => {
-  return {type: CHANGE_TASK, taskId, obj, todolistId}
+    return {type: CHANGE_TASK, taskId, obj, todolistId}
+};
+
+export const removeTaskAC = (todolistId, taskId) => {
+    return {type: REMOVE_TASK, todolistId, taskId}
 };
 
 export default reducer;

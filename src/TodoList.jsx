@@ -5,7 +5,7 @@ import TodoListFooter from './components/TodoListFooter/TodoListFooter';
 import TodoListTitle from "./components/TodoListHeader/TodoListTitle";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
-import {ADD_TASK, REMOVE_TASK, REMOVE_TODOLIST, updateTaskAC} from "./store/reducer";
+import {addTaskAC, removeTaskAC, removeTodolistAC, updateTaskAC} from "./store/reducer";
 
 class TodoList extends React.Component {
 
@@ -75,8 +75,7 @@ class TodoList extends React.Component {
     };
 
     removeTask = (taskId) => {
-        this.props.removeTaskAC(taskId, this.props.id);
-        console.log(taskId, this.props.id)
+        this.props.removeTask(this.props.id, taskId);
     };
 
     render = () => {
@@ -122,20 +121,19 @@ class TodoList extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         addTask: (newTask, todolistId) => {
-            const action = {type: ADD_TASK, newTask, todolistId};
+            const action = addTaskAC(newTask, todolistId);
             dispatch(action)
         },
         changeTaskAC: (taskId, obj, todolistId) => {
-            // const action = {type: CHANGE_TASK, taskId, obj, todolistId};
             const action = updateTaskAC(taskId, obj, todolistId);
             dispatch(action)
         },
         removeTodolistAC: (todolistId) => {
-            const action = {type: REMOVE_TODOLIST, todolistId};
+            const action = removeTodolistAC(todolistId);
             dispatch(action);
         },
-        removeTaskAC : (taskId, todolistId) => {
-            const action = {type: REMOVE_TASK, taskId, todolistId};
+        removeTask : (todolistId, taskId) => {
+            const action = removeTaskAC(todolistId, taskId);
             dispatch(action)
         }
     }
