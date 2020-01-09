@@ -3,21 +3,51 @@ import './App.css';
 import TodoList from "./TodoList.jsx";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
-import {addTolistAC} from "./store/reducer";
+import {addTolistAC, setTodolistAc} from "./store/reducer";
+import axios from "axios";
 
 class App extends React.Component {
 
-    addTodoList = (newTitle) => {
+    componentDidMount() {
+        this.restoreState()
+    }
 
-        let newTodoList = {
-            id: this.props.todolists.length + 1,
-            title: newTitle,
-            tasks: []
-        };
-        this.props.addTodolist(newTodoList);
+    restoreState = () => {
+        axios.get("https://social-network.samuraijs.com/api/1.1/todo-lists",
+            {
+                withCredentials: true,
+                headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
+            })
+            .then(res => {
+                debugger;
+                console.log(res.data);
+                this.props.setTodolist(res.data)
+            });
+
     };
 
+    addTodoList = (newTitle) => {
 
+        axios.post('https://social-network.samuraijs.com/api/1.1/todo-lists',
+            {title: newTitle},
+            {
+                withCredentials: true,
+                headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
+            }
+        )
+            .then(res => {
+                debugger;
+                let newTodolist = res.data.data.item;
+                this.props.addTodolist(newTodolist)
+            });
+
+        // let newTodoList = {
+        //     id: this.props.todolists.length + 1,
+        //     title: newTitle,
+        //     tasks: []
+        // };
+        // this.props.addTodolist(newTodoList);
+    };
 
     render = () => {
         const todoLists = this.props.todolists.map(tl => <TodoList id={tl.id}
@@ -26,14 +56,14 @@ class App extends React.Component {
                                                                    tasks={tl.tasks}/>);
 
         return (
-                <>
-                    <div className="mainInput">
-                        <AddNewItemForm addItem={this.addTodoList}/>
-                    </div>
-                    <div className="App">
-                        {todoLists}
-                    </div>
-                </>
+            <>
+                <div className="mainInput">
+                    <AddNewItemForm addItem={this.addTodoList}/>
+                </div>
+                <div className="App">
+                    {todoLists}
+                </div>
+            </>
         );
     }
 }
@@ -48,6 +78,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addTodolist: (newTodolist) => {
             const action = addTolistAC(newTodolist);
+            dispatch(action)
+        },
+        setTodolist: (resTodolist) => {
+            const action = setTodolistAc(resTodolist);
             dispatch(action)
         }
     }

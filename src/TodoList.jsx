@@ -80,6 +80,8 @@ class TodoList extends React.Component {
 
     render = () => {
 
+        let {tasks = {}} = this.props;
+
         const getFilterTasks = (tasks) => {
             return tasks.filter(t => {
                         if (this.props.filterValue === 'Active') {
@@ -105,7 +107,7 @@ class TodoList extends React.Component {
                             <AddNewItemForm addItem={this.addItem}/>
                         </div>
 
-                        <TodoListTasks tasks={getFilterTasks(this.props.tasks)}
+                        <TodoListTasks tasks={getFilterTasks(tasks)}
                                        changeStatus={this.changeStatus}
                                        changeTitle={this.changeTitle}
                                        removeTask={this.removeTask}/>
