@@ -19,8 +19,6 @@ class App extends React.Component {
                 headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
             })
             .then(res => {
-                debugger;
-                console.log(res.data);
                 this.props.setTodolist(res.data)
             });
 
@@ -36,7 +34,6 @@ class App extends React.Component {
             }
         )
             .then(res => {
-                debugger;
                 let newTodolist = res.data.data.item;
                 this.props.addTodolist(newTodolist)
             });

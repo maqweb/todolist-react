@@ -6,6 +6,7 @@ import TodoListTitle from "./components/TodoListHeader/TodoListTitle";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
 import {addTaskAC, removeTaskAC, removeTodolistAC, updateTaskAC} from "./store/reducer";
+import axios from "axios";
 
 class TodoList extends React.Component {
 
@@ -71,7 +72,18 @@ class TodoList extends React.Component {
     };
 
     removeTodolist = () => {
-        this.props.removeTodolistAC(this.props.id)
+
+        // this.props.removeTodolistAC(this.props.id);
+
+        axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}`,
+            {
+                withCredentials: true,
+                headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
+            })
+            .then(res => {
+                debugger;
+                this.props.removeTodolistAC(this.props.id);
+            })
     };
 
     removeTask = (taskId) => {
@@ -80,7 +92,7 @@ class TodoList extends React.Component {
 
     render = () => {
 
-        let {tasks = {}} = this.props;
+        let {tasks = []} = this.props;
 
         const getFilterTasks = (tasks) => {
             return tasks.filter(t => {

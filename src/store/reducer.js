@@ -7,15 +7,15 @@ export const SET_TODOLIST = 'SET_TODOLIST';
 
 const initialState = {
     todolists: [
-        {
-            id: 1, title: "first", tasks: [
-                {title: "html/css", isDone: false, id: 1, priority: "low"},
-                {title: "javascript", isDone: false, id: 2, priority: "high"},
-                {title: "react", isDone: false, id: 3, priority: "high"},
-            ]
-        },
-        {id: 2, title: "second", tasks: []},
-        {id: 3, title: "third", tasks: []},
+        // {
+        //     id: 1, title: "first", tasks: [
+        //         {title: "html/css", isDone: false, id: 1, priority: "low"},
+        //         {title: "javascript", isDone: false, id: 2, priority: "high"},
+        //         {title: "react", isDone: false, id: 3, priority: "high"},
+        //     ]
+        // },
+        // {id: 2, title: "second", tasks: []},
+        // {id: 3, title: "third", tasks: []},
     ]
 };
 
@@ -32,7 +32,7 @@ const reducer = (state = initialState, action) => {
         case ADD_TODOLIST:
             return {
                 ...state,
-                todolists: [...state.todolists, action.newTodolist]
+                todolists: [action.newTodolist, ...state.todolists]
             };
 
         case REMOVE_TODOLIST:
