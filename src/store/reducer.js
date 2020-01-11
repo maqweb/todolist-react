@@ -26,7 +26,7 @@ const reducer = (state = initialState, action) => {
         case SET_TODOLIST:
             return {
               ...state,
-              todolists: action.resTodolist
+              todolists: action.todolists.map(tl => ({...tl, tasks: []}) )
             };
 
         case ADD_TODOLIST:
@@ -46,6 +46,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 todolists: state.todolists.map(tl => {
                     if (tl.id === action.todolistId) {
+                        debugger;
                         return {...tl, tasks: [...tl.tasks, action.newTask]}
                     } else {
                         return tl;
@@ -91,8 +92,8 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-export const setTodolistAc = (resTodolist) => {
-    return {type: SET_TODOLIST, resTodolist}
+export const setTodolistAc = (todolists) => {
+    return {type: SET_TODOLIST, todolists}
 };
 
 export const addTolistAC = (newTodolist) => {

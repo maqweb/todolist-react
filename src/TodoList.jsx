@@ -39,16 +39,30 @@ class TodoList extends React.Component {
     };
 
     addItem = (newTitle) => {
-        let newTask = {
-            id: this.props.tasks.length + 1,
-            title: newTitle,
-            isDone: false,
-            priority: 'no'
 
-        };
+        axios.post(`https://social-network.samuraijs.com/api/1.1/todo-lists/${this.props.id}/tasks`,
+            {title: newTitle},
+            {
+                withCredentials: true,
+                headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
+            }
+        )
+            .then(res => {
+                let newTitle = res.data.data.item.title;
+                console.log(newTitle, this.props.id);
+                this.props.addTask(newTitle, this.props.id)
+            });
+
+        // let newTask = {
+        //     id: this.props.tasks.length + 1,
+        //     title: newTitle,
+        //     isDone: false,
+        //     priority: 'no'
+        //
+        // };
         // let newTasks = [...this.state.tasks, newTask];
         // this.setState({tasks: newTasks}, () => {this.saveState()});
-        this.props.addTask(newTask, this.props.id);
+        // this.props.addTask(newTask, this.props.id);
     };
 
     changeFilter = (newFilterValue) => {
@@ -81,7 +95,6 @@ class TodoList extends React.Component {
                 headers: {'API-KEY': '6ab52400-1718-48c6-9e57-f24fa6232ed9'}
             })
             .then(res => {
-                debugger;
                 this.props.removeTodolistAC(this.props.id);
             })
     };

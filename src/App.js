@@ -25,7 +25,6 @@ class App extends React.Component {
     };
 
     addTodoList = (newTitle) => {
-
         axios.post('https://social-network.samuraijs.com/api/1.1/todo-lists',
             {title: newTitle},
             {
