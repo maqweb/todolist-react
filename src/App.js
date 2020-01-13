@@ -50,7 +50,6 @@ class App extends React.Component {
                                                                    key={tl.id}
                                                                    title={tl.title}
                                                                    tasks={tl.tasks}/>);
-
         return (
             <>
                 <div className="mainInput">
@@ -66,7 +65,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        todolists: state.todolists
+        todolists: state.todolists,
+        tasks: state.todolists.tasks
     }
 };
 

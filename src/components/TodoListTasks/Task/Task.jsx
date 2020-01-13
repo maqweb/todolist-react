@@ -53,7 +53,7 @@ class Task extends React.Component {
                                    value={this.props.task.title} type="text"/>
 
                             : <span onClick={this.activateEditMode}
-                                    className={`${priorityClass} ${isDoneClass}`}>{this.props.task.id} - {this.props.task.title}</span>}
+                                    className={`${priorityClass} ${isDoneClass}`}> {this.props.task.title}</span>}
                     <span> - priority: {this.props.task.priority}</span>
 
                     <button className="btn-tasks" onClick={this.onDeleteTask}>X</button>
