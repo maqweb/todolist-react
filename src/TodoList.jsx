@@ -6,11 +6,10 @@ import TodoListTitle from "./components/TodoListHeader/TodoListTitle";
 import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
 import {
-    addTaskAC,
-    changeTodolistTitleAC,
+    addTaskTC,
+    changeTodolistTitleAC, getTasksTC,
     removeTaskAC,
     removeTodolistAC,
-    setTaskAC,
     updateTaskAC
 } from "./store/reducer";
 import {api} from "./api/api";
@@ -33,19 +32,16 @@ class TodoList extends React.Component {
     };
 
     restoreState = () => {
-        api.getTasks(this.props.id)
-            .then(res => {
-                let allTasks = res.data.items;
-                this.props.setTasks(allTasks, this.props.id);
-            })
+        this.props.getTasks(this.props.id);
     };
 
     addItem = (newTitle) => {
-        api.addItem(this.props.id, newTitle)
+        this.props.addTask(this.props.id, newTitle)
+        /*api.addItem(this.props.id, newTitle)
             .then(res => {
                 let newTitle = res.data.data.item;
                 this.props.addTask(newTitle, this.props.id)
-            });
+            });*/
     };
 
 
@@ -143,13 +139,13 @@ class TodoList extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setTasks: (tasks, todolistId) => {
-            const action = setTaskAC(tasks, todolistId);
-            dispatch(action);
+        getTasks: (taskId) => {
+            const thunk = getTasksTC(taskId);
+            dispatch(thunk);
         },
-        addTask: (newTask, todolistId) => {
-            const action = addTaskAC(newTask, todolistId);
-            dispatch(action);
+        addTask: (todolistId, newTask) => {
+            const thunk = addTaskTC(todolistId, newTask);
+            dispatch(thunk);
         },
         changeTaskAC: (taskId, obj, todolistId) => {
             const action = updateTaskAC(taskId, obj, todolistId);
