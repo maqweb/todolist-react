@@ -7,12 +7,12 @@ import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
 import {connect} from "react-redux";
 import {
     addTaskTC,
-    changeTodolistTitleAC, getTasksTC,
-    removeTaskAC,
-    removeTodolistAC,
-    updateTaskAC
+    changeTodolistTitleTC,
+    getTasksTC,
+    removeTaskTC,
+    removeTodolistTC,
+    updateTaskTC
 } from "./store/reducer";
-import {api} from "./api/api";
 
 class TodoList extends React.Component {
 
@@ -37,30 +37,21 @@ class TodoList extends React.Component {
 
     addItem = (newTitle) => {
         this.props.addTask(this.props.id, newTitle)
-        /*api.addItem(this.props.id, newTitle)
-            .then(res => {
-                let newTitle = res.data.data.item;
-                this.props.addTask(newTitle, this.props.id)
-            });*/
     };
 
-
     changeStatus = (taskId, status) => {
-        this.changeTask(taskId, {status: status})
+        this.onChangeTask(taskId, {status: status})
     };
 
     changeTitle = (taskId, newTitle, todolistId) => {
-        this.changeTask(taskId, {title: newTitle}, todolistId)
+        this.onChangeTask(taskId, {title: newTitle}, todolistId)
     };
 
     onChangeTodolistTitle = (todolistId, newTitle) => {
-        api.changeTodolistTitle(todolistId, newTitle)
-            .then(res => {
-                this.props.changeTodolistTitle(todolistId, newTitle)
-            })
+        this.props.changeTodolistTitle(todolistId, newTitle);
     };
 
-    changeTask = (taskId, obj) => {
+    onChangeTask = (taskId, obj) => {
 
         let task = this.props.tasks.find(t => (t.id === taskId));
         let updatedTask = {
@@ -74,24 +65,15 @@ class TodoList extends React.Component {
             ...obj
         };
 
-        api.changeTask(this.props.id, taskId, updatedTask)
-            .then(res => {
-                this.props.changeTaskAC(taskId, obj, this.props.id)
-            });
+        this.props.changeTask(this.props.id, taskId, updatedTask)
     };
 
-    removeTodolist = () => {
-        api.removeTodolist(this.props.id)
-            .then(res => {
-                this.props.removeTodolistAC(this.props.id);
-            })
+    onRemoveTodolist = () => {
+        this.props.removeTodolist(this.props.id);
     };
 
-    removeTask = (taskId) => {
-        api.removeTask(this.props.id, taskId)
-            .then(res => {
-                this.props.removeTask(this.props.id, taskId);
-            });
+    onRemoveTask = (taskId) => {
+        this.props.removeTask(this.props.id, taskId)
     };
 
     render = () => {
@@ -100,10 +82,10 @@ class TodoList extends React.Component {
 
         const getFilterTasks = (tasks) => {
             return tasks.filter(t => {
-                    if (this.props.filterValue === 'Active') {
-                        return t.isDone === false;
-                    } else if (this.props.filterValue === 'Completed') {
-                        return t.isDone === true;
+                    if (this.state.filterValue === 'Active') {
+                        return t.status === 0;
+                    } else if (this.state.filterValue === 'Completed') {
+                        return t.status === 2;
                     } else {
                         return true;
                     }
@@ -118,7 +100,7 @@ class TodoList extends React.Component {
                     <div className="todoList-header">
                         <TodoListTitle id={this.props.id}
                                        title={this.props.title}
-                                       removeTodolist={this.removeTodolist}
+                                       onRemoveTodolist={this.onRemoveTodolist}
                                        onChangeTodolistTitle={this.onChangeTodolistTitle}/>
 
                         <AddNewItemForm addItem={this.addItem}/>
@@ -127,7 +109,7 @@ class TodoList extends React.Component {
                     <TodoListTasks tasks={getFilterTasks(tasks)}
                                    changeStatus={this.changeStatus}
                                    changeTitle={this.changeTitle}
-                                   removeTask={this.removeTask}/>
+                                   onRemoveTask={this.onRemoveTask}/>
 
                     <TodoListFooter filterValue={this.state.filterValue} changeFilter={this.changeFilter}/>
 
@@ -147,21 +129,21 @@ const mapDispatchToProps = (dispatch) => {
             const thunk = addTaskTC(todolistId, newTask);
             dispatch(thunk);
         },
-        changeTaskAC: (taskId, obj, todolistId) => {
-            const action = updateTaskAC(taskId, obj, todolistId);
-            dispatch(action);
+        changeTask: (todolistId, taskId, obj) => {
+            const thunk = updateTaskTC(todolistId, taskId, obj);
+            dispatch(thunk);
         },
-        removeTodolistAC: (todolistId) => {
-            const action = removeTodolistAC(todolistId);
-            dispatch(action);
+        removeTodolist: (todolistId) => {
+            const thunk = removeTodolistTC(todolistId);
+            dispatch(thunk);
         },
         removeTask: (todolistId, taskId) => {
-            const action = removeTaskAC(todolistId, taskId);
-            dispatch(action);
+            const thunk = removeTaskTC(todolistId, taskId);
+            dispatch(thunk);
         },
         changeTodolistTitle: (todolistId, newTitle) => {
-            const action = changeTodolistTitleAC(todolistId, newTitle);
-            dispatch(action);
+            const thunk = changeTodolistTitleTC(todolistId, newTitle);
+            dispatch(thunk);
         }
     }
 };

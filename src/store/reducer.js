@@ -92,7 +92,7 @@ const reducer = (state = initialState, action) => {
                             ...tl,
                             tasks: tl.tasks.map(t => {
                                 if (t.id === action.taskId) {
-                                    return {...t, ...action.obj}
+                                    return {...t, ...action.updatedTask}
                                 } else {
                                     return t
                                 }
@@ -129,8 +129,8 @@ export const addTaskAC = (todolistId, newTask) => {
     return {type: ADD_TASK, todolistId, newTask}
 };
 
-export const updateTaskAC = (taskId, obj, todolistId) => {
-    return {type: CHANGE_TASK, taskId, obj, todolistId}
+export const updateTaskAC = (todolistId, taskId, updatedTask) => {
+    return {type: CHANGE_TASK, todolistId, taskId, updatedTask}
 };
 
 export const removeTaskAC = (todolistId, taskId) => {
@@ -143,7 +143,8 @@ export const changeTodolistTitleAC = (todolistId, newTitle) => {
 
 export const getTodolistsTC = () => {
     return (dispatch) => {
-        api.getTodolists().then(res => {
+        api.getTodolists()
+            .then(res => {
             dispatch(setTodolistAc(res.data))
         })
     }
@@ -151,16 +152,27 @@ export const getTodolistsTC = () => {
 
 export const addTodolistTC = (newTodolist) => {
     return (dispatch) => {
-        api.addTodoList(newTodolist).then(res => {
+        api.addTodoList(newTodolist)
+            .then(res => {
             let newTodolist = res.data.data.item;
             dispatch(addTodolistAC(newTodolist))
         })
     };
 };
 
+export const changeTodolistTitleTC = (todolistId, newTitle) => {
+    return (dispatch) => {
+        api.changeTodolistTitle(todolistId, newTitle)
+            .then(res => {
+                dispatch(changeTodolistTitleAC(todolistId, newTitle))
+            })
+    }
+};
+
 export const getTasksTC = (taskId) => {
     return (dispatch) => {
-        api.getTasks(taskId).then(res => {
+        api.getTasks(taskId)
+            .then(res => {
             let allTasks = res.data.items;
             dispatch(setTaskAC(allTasks, taskId));
         })
@@ -177,5 +189,31 @@ export const addTaskTC = (todolistId, newTask) => {
     }
 };
 
+export const updateTaskTC = (todolistId, taskId, updatedTask) => {
+    return (dispatch) => {
+        api.changeTask(todolistId, taskId, updatedTask)
+            .then(res => {
+                dispatch(updateTaskAC(todolistId, taskId, updatedTask))
+            })
+    }
+};
+
+export const removeTodolistTC = (todolistId) => {
+    return (dispatch) => {
+        api.removeTodolist(todolistId)
+            .then(res => {
+                dispatch(removeTodolistAC(todolistId))
+            })
+    }
+};
+
+export const removeTaskTC = (todolistId, taskId) => {
+    return (dispatch) => {
+        api.removeTask(todolistId, taskId)
+            .then(res => {
+                dispatch(removeTaskAC(todolistId, taskId))
+            })
+    }
+};
 
 export default reducer;

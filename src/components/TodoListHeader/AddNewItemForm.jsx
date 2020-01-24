@@ -49,7 +49,7 @@ class AddNewItemForm extends React.Component {
                 <input type="text"
                        onChange={this.onInputChange}
                        onKeyPress={this.onKeyPress}
-                       className={errorClass}
+                       className={`input ${errorClass}`}
                        value={this.state.title}
                        placeholder="New item name"/>
 
