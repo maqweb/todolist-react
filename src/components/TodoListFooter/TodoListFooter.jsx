@@ -33,14 +33,17 @@ class TodoListFooter extends React.Component {
 
         return (
             <div className="todoList-footer">
-                {!this.state.isHidden && <div>
+
+                {!this.state.isHidden && <button onClick={this.onShowFiltersClick}>hide</button>}
+                {this.state.isHidden && <button onClick={this.onHideFiltersClick}>show</button>}
+
+                {!this.state.isHidden && <div className='filter-buttons'>
                     <button onClick={this.onAllFilterClick} className={classForAll}>All</button>
                     <button onClick={this.onCompletedFilterClick} className={classForCompleted}>Completed</button>
                     <button onClick={this.onActiveFilterClick} className={classForActive}>Active</button>
                 </div>}
 
-                {!this.state.isHidden && <button onClick={this.onShowFiltersClick}>hide</button>}
-                {this.state.isHidden && <button onClick={this.onHideFiltersClick}>show</button>}
+
 
             </div>
         );
