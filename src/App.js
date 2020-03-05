@@ -1,63 +1,47 @@
 import React from 'react';
 import './App.css';
-import TodoList from "./TodoList.jsx";
-import AddNewItemForm from "./components/TodoListHeader/AddNewItemForm";
+import Login from "./components/Login/Login";
+import {NavLink, Route} from "react-router-dom";
+import Main from "./components/Main/Main";
 import {connect} from "react-redux";
-import {addTodolistTC, getTodolistsTC} from "./store/reducer";
+import {authMe, logout} from "./store/auth-reducer";
 
 class App extends React.Component {
 
     componentDidMount() {
-        this.restoreState()
+        this.props.authMe()
     }
 
-    restoreState = () => {
-        this.props.getTodolists();
+    onLogout = () => {
+        this.props.logout()
     };
 
-    addTodoList = (newTitle) => {
-        this.props.addTodolist(newTitle);
-    };
 
     render = () => {
-        const todoLists = this.props.todolists.map(tl => <TodoList id={tl.id}
-                                                                   key={tl.id}
-                                                                   title={tl.title}
-                                                                   tasks={tl.tasks}/>);
+
         return (
             <>
-                <div className="mainInput">
-                    <AddNewItemForm addItem={this.addTodoList}/>
+                <div>
+
+                    {this.props.isAuth
+                        ? <button onClick={this.onLogout}>Logout</button>
+                        : <NavLink to="/login">Login</NavLink>
+                    }
+                    <NavLink to="/main">Todolist</NavLink>
+
                 </div>
-                <div className="App">
-                    {todoLists}
+                <div className="content">
+                    <Route path='/login' component={Login}/>
+                    <Route path='/main' component={Main}/>
                 </div>
             </>
         );
     }
 }
 
+const mstp = (state) => ({
+    isAuth: state.auth.isAuth
+});
 
-
-const mapStateToProps = (state) => {
-    return {
-        todolists: state.todolists,
-        tasks: state.todolists.tasks
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addTodolist: (newTodolist) => {
-            const thunk = addTodolistTC(newTodolist);
-            dispatch(thunk)
-        },
-        getTodolists: () => {
-            const thunk = getTodolistsTC();
-            dispatch(thunk);
-        }
-    }
-};
-
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+const ConnectedApp = connect(mstp, {authMe, logout})(App);
 export default ConnectedApp;

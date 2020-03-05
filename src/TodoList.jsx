@@ -43,8 +43,8 @@ class TodoList extends React.Component {
         this.onChangeTask(taskId, {status: status})
     };
 
-    changeTitle = (taskId, newTitle, todolistId) => {
-        this.onChangeTask(taskId, {title: newTitle}, todolistId)
+    changeTitle = (taskId, newTitle) => {
+        this.onChangeTask(taskId, {title: newTitle})
     };
 
     onChangeTodolistTitle = (todolistId, newTitle) => {
